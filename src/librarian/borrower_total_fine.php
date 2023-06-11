@@ -1,8 +1,7 @@
 <?php
 	require "../db_connect.php";
 	require "../message_display.php";
-	require "verify_member.php";
-	require "header_member.php";
+	require "header_librarian.php";
 ?>
 
 <html>

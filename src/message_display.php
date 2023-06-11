@@ -6,7 +6,7 @@
 					document.getElementById("error-message").style.display = "block";
 				</script>';
 	}
-	
+
 	function error_with_field($message, $field)
 	{
 		return '<script>
