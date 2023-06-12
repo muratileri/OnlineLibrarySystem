@@ -53,13 +53,13 @@
 			{
 				$resultRow = mysqli_fetch_array($result);
 				$access_to_system = $resultRow[1];
-				if($access_to_system == true)
+				if($access_to_system == true){
 					$_SESSION['type'] = "useraccount";
 					$_SESSION['user_id'] = $resultRow[0];
 					$_SESSION['username'] = $_POST['m_user'];
 					header('Location: home.php');
-				else
-				{
+				}
+				else{
 					echo error_without_field("Buraya düzgün bir şey yazalım.");
 				}
 			}
