@@ -14,10 +14,10 @@
 			
 			<div class="dropdown">
 				<button class="dropbtn">
-					<p id="librarian-name">burası düzelecek</p>
+					<p id="librarian-name"><?php echo $_SESSION['username'] ?></p>
 				</button>
 				<div class="dropdown-content">
-					<a href="../insert_book.php">Insert Book</a>
+					<a href=".././librarian/insert_book.php">Insert Book</a>
                     <a href=".././librarian/book_details.php">Book Details</a>
                     <a href=".././librarian/copies_per_branch.php">Copies Per Branch</a>
                     <a href=".././librarian/top_rated_books.php">Top Rated Books</a>
