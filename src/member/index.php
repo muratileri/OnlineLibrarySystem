@@ -40,8 +40,10 @@
 	<?php
 		if(isset($_POST['m_login']))
 		{
-			$query = $con->prepare("SELECT user_id FROM useraccount WHERE username = ? AND password = ?;");
-			$query->bind_param("ss", $_POST['m_user'], sha1($_POST['m_pass']));
+			$query = $con->prepare("SELECT user_id, access_to_system FROM useraccount WHERE username = ? AND password = ?;");
+			$username = $_POST['m_user'];
+			$password = sha1($_POST['m_pass']);
+			$query->bind_param("ss", $username, $password);
 			$query->execute();
 			$result = $query->get_result();
 			
@@ -50,15 +52,15 @@
 			else 
 			{
 				$resultRow = mysqli_fetch_array($result);
-				$balance = $resultRow[1];
-				if($balance < 0)
-					echo error_without_field("Your account has been suspended. Please contact a librarian for further information");
-				else
-				{
+				$access_to_system = $resultRow[1];
+				if($access_to_system == true){
 					$_SESSION['type'] = "useraccount";
 					$_SESSION['user_id'] = $resultRow[0];
 					$_SESSION['username'] = $_POST['m_user'];
 					header('Location: home.php');
+				}
+				else{
+					echo error_without_field("Buraya düzgün bir şey yazalım.");
 				}
 			}
 		}
