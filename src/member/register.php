@@ -13,7 +13,7 @@
 		<link rel="stylesheet" href="css/register_style.css">
 	</head>
 	<body>
-		<form class="cd-form" method="POST" action="#" enctype="multipart/form-data">
+		<form class="cd-form" method="POST" action="#">
 			<legend>Enter your details</legend>
 			
 				<div class="error-message" id="error-message">
@@ -50,11 +50,7 @@
 					</select>
 				</div>
 
-				<div>
-					<label>Select Image File:</label>
-					<input type="file" name="image">
-				</div>
-				
+
 				<br />
 				<input type="submit" name="m_register" value="Register" />
 		</form>
@@ -77,34 +73,17 @@
 					echo error_with_field("An account is already registered with that email", "m_email");
 				else
 				{
-					$imgContent = null;
-					// If file upload form is submitted 
-					if (!empty($_FILES["image"]["name"])) { 
-						// Get file info 
-						$fileName = $_FILES["image"]["name"];
-						$fileTmpName = $_FILES["image"]["tmp_name"];
-						$fileType = $_FILES["image"]["type"];
-						$fileSize = $_FILES["image"]["size"];
-
-						// Allow certain file formats 
-						$allowTypes = array('image/jpg', 'image/png', 'image/jpeg'); 
-						if (in_array($fileType, $allowTypes) && $fileSize > 0) {
-							$imgContent = file_get_contents($fileTmpName);
-						} else {
-							$statusMsg = 'Sorry, only JPG, JPEG, PNG, & GIF files are allowed to upload.';
-						}
-					}
-
-					$query = $con->prepare("CALL InsertUserAccount(?, ?, ?, ?, ?, ?, ?);");
+					$query = $con->prepare("CALL InsertUserAccount(?, ?, ?, ?, ?);");
 					$username = $_POST['m_user'];
 					$password = sha1($_POST['m_pass']);
 					$email = $_POST['m_email'];
 					$address = $_POST['m_address'];
 					$phone = $_POST['m_phone'];
 					$borrower_type = $_POST['m_type'];
-					$access_to_system = false;
+					
+					$query->bind_param("sssss", $username, $password, $email, $address, $phone);
 
-					if($query->execute([$username, $password, $email, $address, $phone, $imgContent, $access_to_system])){
+					if($query->execute()){
 						$con->commit();
 						$query = $con->prepare("SELECT user_id FROM useraccount WHERE username = ?;");
 						$query->bind_param("s", $_POST['m_user']);
