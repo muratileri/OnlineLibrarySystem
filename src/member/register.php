@@ -2,6 +2,7 @@
 	require "../db_connect.php";
 	require "../message_display.php";
 	require "../header.php";
+	require '../logger.php';
 ?>
 
 <html>
@@ -93,7 +94,10 @@
 						$borrower_type = $_POST['m_type'];
 						$query->bind_param("is", $new_user_id, $borrower_type);
 						$query->execute();
-						echo success("User is registered.");
+
+						logActivity('User is registered.');
+
+						echo success("Buraya işte onaylanmanız lazımdır tarzı bir şey.");
 						
 					}
 					else

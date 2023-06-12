@@ -3,6 +3,7 @@
 	require "../message_display.php";
 	require "verify_member.php";
 	require "header_member.php";
+	require '../logger.php';
 ?>
 
 <html>
@@ -144,6 +145,7 @@
 								$null = null;
 								$query->bind_param("iisss", $borrower_id, $copy_id, $currentDate, $futureDate, $null);
 								$query->execute();
+								logActivity('User is request book.');
 								echo success("Book successfully requested.");
 						}
 					}
