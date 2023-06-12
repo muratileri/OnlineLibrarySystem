@@ -41,7 +41,9 @@
 		if(isset($_POST['m_login']))
 		{
 			$query = $con->prepare("SELECT user_id, access_to_system FROM useraccount WHERE username = ? AND password = ?;");
-			$query->bind_param("ss", $_POST['m_user'], sha1($_POST['m_pass']));
+			$username = $_POST['m_user'];
+			$password = sha1($_POST['m_pass']);
+			$query->bind_param("ss", $username, $password);
 			$query->execute();
 			$result = $query->get_result();
 			
