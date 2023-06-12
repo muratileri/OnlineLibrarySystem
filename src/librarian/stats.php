@@ -189,6 +189,110 @@
         // Generate the report and save it as a file
         generateReport($tableData[$selectedTable], $selectedTable . '_report', $_POST['format']);
     }
+
+    //burdan itibaren buton kodları
+    if (isset($_POST['submit'])) {
+        $submitType = $_POST['submit'];
+
+        if ($submitType === 'Add') {
+            $addFields = [];
+
+            foreach ($tableData[$selectedTable] as $header) {
+                $fieldName = 'add_'.strtolower(str_replace(' ', '_', $header));
+
+                if (isset($_POST[$fieldName])) {
+                    $addFields[$header] = $_POST[$fieldName];
+                }
+            }
+
+            if (count($addFields) === count($tableData[$selectedTable])) {
+                $placeholders = implode(', ', array_fill(0, count($addFields), '?'));
+
+                $addQuery = $con->prepare("INSERT INTO $selectedTable (".implode(', ', $tableData[$selectedTable]).") VALUES ($placeholders)");
+
+                $types = str_repeat('s', count($addFields));
+                $addQuery->bind_param($types, ...array_values($addFields));
+
+                if ($addQuery->execute()) {
+                    // Success: Added the row
+                } else {
+                    // Error: Failed to add the row
+                }
+            } else {
+                // Error: Missing fields for adding the row
+            }
+        } elseif ($submitType === 'Update') {
+            // Get the values to update
+            $updateFields = [];
+
+            foreach ($tableData[$selectedTable] as $header) {
+                $fieldName = 'add_'.strtolower(str_replace(' ', '_', $header));
+
+                if (isset($_POST[$fieldName])) {
+                    $updateFields[$header] = $_POST[$fieldName];
+                }
+            }
+
+            if (count($updateFields) === count($tableData[$selectedTable])) {
+                // Get the selected row's index
+                $rowIndex = $_POST['row_id'] + 1;
+
+                // Update the table row with the new values
+                $table = $con->prepare("UPDATE $selectedTable SET ".implode(' = ?, ', $tableData[$selectedTable])." = ? WHERE id = ?");
+                $types = str_repeat('s', count($updateFields));
+                $values = array_merge(array_values($updateFields), [$rowIndex]);
+                $table->bind_param($types.'i', ...$values);
+
+                if ($table->execute()) {
+                    // Success: Updated the row
+                } else {
+                    // Error: Failed to update the row
+                }
+            } else {
+                // Error: Missing fields for updating the row
+            }
+        } elseif ($submitType === 'Delete') {
+            // Get the selected row's index
+            $rowIndex = $_POST['row_id'] + 1;
+
+            // Delete the table row
+            $table = $con->prepare("DELETE FROM $selectedTable WHERE id = ?");
+            $table->bind_param('i', $rowIndex);
+
+            if ($table->execute()) {
+                // Success: Deleted the row
+            } else {
+                // Error: Failed to delete the row
+            }
+        }
+    }
+
+function openAccordion($rowId) {
+    echo "<script>";
+    echo "var accordionRow = document.getElementById('add-row-accordion');";
+    echo "accordionRow.style.display = 'table-row';";
+
+    echo "var table = document.querySelector('table');";
+    echo "var tableRows = table.getElementsByTagName('tr');";
+    echo "var updateRow = tableRows[$rowId + 1];";
+    echo "var inputFields = accordionRow.getElementsByTagName('input');";
+    echo "var updateFields = updateRow.getElementsByTagName('td');";
+
+    echo "for (var i = 0; i < inputFields.length; i++) {";
+    echo "    inputFields[i].value = updateFields[i].textContent.trim();";
+    echo "}";
+    echo "</script>";
+}
+
+function deleteRow($rowId) {
+    echo "<script>";
+    echo "var table = document.querySelector('table');";
+    echo "var tableRows = table.getElementsByTagName('tr');";
+    echo "var deleteRow = tableRows[$rowId + 1];";
+    echo "deleteRow.remove();";
+    echo "</script>";
+}
+
 ?>
 
 <html>
@@ -239,9 +343,23 @@
             echo "<tr>";
             foreach ($tableData[$selectedTable] as $header) {
                 echo "<td>".$row[strtolower(str_replace(' ', '_', $header))]."</td>";
+
             }
+            echo "<td>
+             <input class='button' type='submit' name='submit' onclick='openAccordion($i)' value='Update'>
+             <input class='button' type='submit' name='submit' onclick='deleteRow($i)' value='Delete'>
+            </td>";
             echo "</tr>";
+
         }
+        echo "<tr id='add-row-accordion' style='display: none;'>"; // Add a hidden row for the accordion
+            foreach ($tableData[$selectedTable] as $header) {
+                echo "<td><input type='text' name='add_".strtolower(str_replace(' ', '_', $header))."'></td>";
+            }
+        echo "<div>
+            <input class='button' type='submit' name='submit' value='Add'>
+        </div>";
+
         echo "</table>";
 
         // Display the count of rows
