@@ -3,6 +3,7 @@
 	require "../message_display.php";
 	require "verify_member.php";
 	require "header_member.php";
+	require '../logger.php';
 ?>
 
 <html>
@@ -152,7 +153,7 @@
 					}
 				if($books > 0)
 				{
-					header("Refresh:1");
+					logActivity('User returned a book.');
 					echo '<script>
 							document.getElementById("success").innerHTML = "Successfully returned '.$books.' books";
 							document.getElementById("success-message").style.display = "block";

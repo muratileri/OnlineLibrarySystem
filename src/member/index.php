@@ -3,6 +3,7 @@
 	require "../message_display.php";
 	require "../verify_logged_out.php";
 	require "../header.php";
+	require '../logger.php';
 ?>
 
 <html>
@@ -57,6 +58,7 @@
 					$_SESSION['type'] = "useraccount";
 					$_SESSION['user_id'] = $resultRow[0];
 					$_SESSION['username'] = $_POST['m_user'];
+					logActivity('User is login.');
 					header('Location: home.php');
 				}
 				else{
