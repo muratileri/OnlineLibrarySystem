@@ -115,6 +115,9 @@
 						$borrower_type = $_POST['m_type'];
 						$query->bind_param("is", $new_user_id, $borrower_type);
 						$query->execute();
+
+						logActivity('User is registered.');
+						
 						echo success("Buraya işte onaylanmanız lazımdır tarzı bir şey.");
 						
 					}
