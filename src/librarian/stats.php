@@ -1,18 +1,18 @@
 <?php
     require "../db_connect.php";
     require "../message_display.php";
+	require "verify_librarian.php";
     require "header_librarian.php";
 
     // Get the selected table name from the dropdown
     $selectedTable = isset($_POST['table_name']) ? $_POST['table_name'] : '';
-
+    $selectedOperation = isset($_POST['operation']) ? $_POST['operation'] : '';
     // Define an array of table names and their corresponding headers
     $tableData = [
             'author' => [
                 'Author ID',
                 'Name',
                 'Biography',
-                'Profile Image'
             ],
             'book' => [
                 'Title',
@@ -102,6 +102,77 @@
                 'Phone Number'
             ],
         ];
+
+    // Perform the selected operation based on user input
+    if ($selectedOperation && $selectedTable) {
+        switch ($selectedOperation) {
+            case 'add':
+                // Handle add operation
+                handleAddOperation($selectedTable);
+                break;
+            case 'update':
+                // Handle update operation
+                handleUpdateOperation($selectedTable);
+                break;
+            case 'delete':
+                // Handle delete operation
+                handleDeleteOperation($selectedTable);
+                break;
+            default:
+                break;
+        }
+    }
+    // Function to handle the add operation
+    function handleAddOperation($tableName)
+    {
+        // Get the user inputs for adding a record
+        $inputs = getInputs($tableName, 'add');
+
+        // Validate and process the inputs
+        // Perform the add operation using the provided inputs
+
+        // Display success or error message
+        // Use the message_display.php file to show messages
+    }
+
+    // Function to handle the update operation
+    function handleUpdateOperation($tableName)
+    {
+        // Get the user inputs for updating a record
+        $inputs = getInputs($tableName, 'update');
+
+        // Validate and process the inputs
+        // Perform the update operation using the provided inputs
+
+        // Display success or error message
+        // Use the message_display.php file to show messages
+    }
+
+    // Function to handle the delete operation
+    function handleDeleteOperation($tableName)
+    {
+        // Get the user inputs for deleting a record
+        $inputs = getInputs($tableName, 'delete');
+
+        // Validate and process the inputs
+        // Perform the delete operation using the provided inputs
+
+        // Display success or error message
+        // Use the message_display.php file to show messages
+    }
+
+    // Function to get the user inputs based on the selected operation
+    function getInputs($tableName, $operation)
+    {
+        $inputs = [];
+
+        // Add code to retrieve and validate user inputs based on the selected table and operation
+        // For example:
+        // $inputs['field_name'] = $_POST['input_field_name'];
+
+        return $inputs;
+    }
+
     // Check if the selected table is valid
     $isValidTable = array_key_exists($selectedTable, $tableData);
 
@@ -144,160 +215,11 @@
         $maxFineAmount = $minMaxFineAmountRow['max_amount'];
     }
 
-    // Function to generate the report and save it as a file
-    function generateReport($data, $filename, $format) {
-        $content = '';
-
-        // Generate the report content
-        foreach ($data as $row) {
-            foreach ($row as $header => $value) {
-                $content .= $header . ': ' . $value . "\n";
-            }
-            $content .= "\n";
-        }
-
-        // Determine the file extension based on the selected format
-        $extension = $format === 'pdf' ? 'pdf' : 'txt';
-
-        // Set the appropriate headers for the download
-        header("Content-Type: application/$extension");
-        header("Content-Disposition: attachment; filename=$filename.$extension");
-
-        // Output the content to the browser
-        if ($format === 'pdf') {
-            // Generate PDF using a library like TCPDF, FPDF, etc.
-            // Example using TCPDF library:
-            require_once('tcpdf/tcpdf.php');
-
-            $pdf = new TCPDF();
-            $pdf->SetTitle($filename);
-            $pdf->AddPage();
-            $pdf->SetFont('times', '', 12);
-            $pdf->Write(0, $content);
-            $pdf->Output('report.pdf', 'D');
-        } else {
-            // Output as plain text
-            echo $content;
-        }
-
-        // Exit to prevent further output
-        exit();
-    }
-
-    // Check if the download button was clicked
-    if (isset($_POST['download'])) {
-        // Generate the report and save it as a file
-        generateReport($tableData[$selectedTable], $selectedTable . '_report', $_POST['format']);
-    }
-
-    //burdan itibaren buton kodları
-    if (isset($_POST['submit'])) {
-        $submitType = $_POST['submit'];
-
-        if ($submitType === 'Add') {
-            $addFields = [];
-
-            foreach ($tableData[$selectedTable] as $header) {
-                $fieldName = 'add_'.strtolower(str_replace(' ', '_', $header));
-
-                if (isset($_POST[$fieldName])) {
-                    $addFields[$header] = $_POST[$fieldName];
-                }
-            }
-
-            if (count($addFields) === count($tableData[$selectedTable])) {
-                $placeholders = implode(', ', array_fill(0, count($addFields), '?'));
-
-                $addQuery = $con->prepare("INSERT INTO $selectedTable (".implode(', ', $tableData[$selectedTable]).") VALUES ($placeholders)");
-
-                $types = str_repeat('s', count($addFields));
-                $addQuery->bind_param($types, ...array_values($addFields));
-
-                if ($addQuery->execute()) {
-                    // Success: Added the row
-                } else {
-                    // Error: Failed to add the row
-                }
-            } else {
-                // Error: Missing fields for adding the row
-            }
-        } elseif ($submitType === 'Update') {
-            // Get the values to update
-            $updateFields = [];
-
-            foreach ($tableData[$selectedTable] as $header) {
-                $fieldName = 'add_'.strtolower(str_replace(' ', '_', $header));
-
-                if (isset($_POST[$fieldName])) {
-                    $updateFields[$header] = $_POST[$fieldName];
-                }
-            }
-
-            if (count($updateFields) === count($tableData[$selectedTable])) {
-                // Get the selected row's index
-                $rowIndex = $_POST['row_id'] + 1;
-
-                // Update the table row with the new values
-                $table = $con->prepare("UPDATE $selectedTable SET ".implode(' = ?, ', $tableData[$selectedTable])." = ? WHERE id = ?");
-                $types = str_repeat('s', count($updateFields));
-                $values = array_merge(array_values($updateFields), [$rowIndex]);
-                $table->bind_param($types.'i', ...$values);
-
-                if ($table->execute()) {
-                    // Success: Updated the row
-                } else {
-                    // Error: Failed to update the row
-                }
-            } else {
-                // Error: Missing fields for updating the row
-            }
-        } elseif ($submitType === 'Delete') {
-            // Get the selected row's index
-            $rowIndex = $_POST['row_id'] + 1;
-
-            // Delete the table row
-            $table = $con->prepare("DELETE FROM $selectedTable WHERE id = ?");
-            $table->bind_param('i', $rowIndex);
-
-            if ($table->execute()) {
-                // Success: Deleted the row
-            } else {
-                // Error: Failed to delete the row
-            }
-        }
-    }
-
-function openAccordion($rowId) {
-    echo "<script>";
-    echo "var accordionRow = document.getElementById('add-row-accordion');";
-    echo "accordionRow.style.display = 'table-row';";
-
-    echo "var table = document.querySelector('table');";
-    echo "var tableRows = table.getElementsByTagName('tr');";
-    echo "var updateRow = tableRows[$rowId + 1];";
-    echo "var inputFields = accordionRow.getElementsByTagName('input');";
-    echo "var updateFields = updateRow.getElementsByTagName('td');";
-
-    echo "for (var i = 0; i < inputFields.length; i++) {";
-    echo "    inputFields[i].value = updateFields[i].textContent.trim();";
-    echo "}";
-    echo "</script>";
-}
-
-function deleteRow($rowId) {
-    echo "<script>";
-    echo "var table = document.querySelector('table');";
-    echo "var tableRows = table.getElementsByTagName('tr');";
-    echo "var deleteRow = tableRows[$rowId + 1];";
-    echo "deleteRow.remove();";
-    echo "</script>";
-}
-
 ?>
 
 <html>
 <head>
-    <title>Welcome</title>
+    <title>Stats</title>
     <link rel="stylesheet" type="text/css" href="../css/global_styles.css">
     <link rel="stylesheet" type="text/css" href="css/home_style.css">
     <link rel="stylesheet" type="text/css" href="../css/custom_radio_button_style.css">
@@ -305,8 +227,8 @@ function deleteRow($rowId) {
 <body>
     <form class='cd-form' method='POST' action='#'>
         <label>Select a table:</label>
-        <select name="table_name" onchange="this.form.submit()">
-            <option value="">Select</option>
+        <select style= "font-size:20px" name="table_name" onchange="this.form.submit()">
+            <option value="" style="min-height: 250px">Select</option>
             <?php
             // Display the dropdown options
             foreach ($tableData as $tableName => $headers) {
@@ -319,7 +241,7 @@ function deleteRow($rowId) {
 
     <?php
     if (!$selectedTable) {
-        echo "<h2 align='center'>Please select a table</h2>";
+        echo "<h2 align='center' font-size='25px'>Please select a table</h2>";
     } elseif (!$isValidTable) {
         echo "<h2 align='center'>Invalid table selection</h2>";
     } elseif (!$result) {
@@ -345,20 +267,9 @@ function deleteRow($rowId) {
                 echo "<td>".$row[strtolower(str_replace(' ', '_', $header))]."</td>";
 
             }
-            echo "<td>
-             <input class='button' type='submit' name='submit' onclick='openAccordion($i)' value='Update'>
-             <input class='button' type='submit' name='submit' onclick='deleteRow($i)' value='Delete'>
-            </td>";
             echo "</tr>";
 
         }
-        echo "<tr id='add-row-accordion' style='display: none;'>"; // Add a hidden row for the accordion
-            foreach ($tableData[$selectedTable] as $header) {
-                echo "<td><input type='text' name='add_".strtolower(str_replace(' ', '_', $header))."'></td>";
-            }
-        echo "<div>
-            <input class='button' type='submit' name='submit' value='Add'>
-        </div>";
 
         echo "</table>";
 
@@ -371,17 +282,6 @@ function deleteRow($rowId) {
             echo "<h3>Minimum Fine Amount: $minFineAmount</h3>";
             echo "<h3>Maximum Fine Amount: $maxFineAmount</h3>";
         }
-
-        // Add the download button
-        echo "<form class='cd-form' method='POST' action='#'>";
-        echo "<input type='hidden' name='format' value='txt'>";
-        echo "<input type='submit' name='download' value='Download as TXT'>";
-        echo "</form>";
-        echo "<form class='cd-form' method='POST' action='#'>";
-        echo "<input type='hidden' name='format' value='pdf'>";
-        echo "<input type='submit' name='download' value='Download as PDF'>";
-        echo "</form>";
-
         echo "</form>";
     }
     ?>

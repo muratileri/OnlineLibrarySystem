@@ -7,7 +7,7 @@
 		<header>
 			<div id="cd-logo">
 				<a href="../member/home.php">
-					<img src="img/ic_logo.svg" alt="Logo" />
+					<img src="img/icons8-library-50.svg" alt="Logo" />
 					<p>LIBRARY</p>
 				</a>
 			</div>
@@ -44,6 +44,8 @@
 				<div class="dropdown-content">
 					
 				<a href="my_books.php">My books</a>
+				<a href=".././member/book_details.php">Book Details</a>
+                <a href=".././member/top_rated_books.php">Top Rated Books</a>
                 <a href="../logout.php">Logout</a>
 
 

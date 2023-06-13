@@ -2,6 +2,7 @@
 	require "../db_connect.php";
 	require "../message_display.php";
 	require "../header.php";
+	require "../logger.php";
 ?>
 
 <html>
@@ -50,7 +51,7 @@
 				</div>
 
 				<div>
-					<label>Select Image File:</label>
+					<h2 style="color:gray">Select Image File:</h2>
 					<input type="file" name="image">
 				</div>
 				
@@ -117,8 +118,8 @@
 						$query->execute();
 
 						logActivity('User is registered.');
-						
-						echo success("Buraya işte onaylanmanız lazımdır tarzı bir şey.");
+
+						echo success("Wait for the admin approval.");
 						
 					}
 					else

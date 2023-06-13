@@ -7,14 +7,14 @@
 
 <html>
 	<head>
-		<title>Update balance</title>
+		<title>Update Balance</title>
 		<link rel="stylesheet" type="text/css" href="../css/global_styles.css" />
 		<link rel="stylesheet" type="text/css" href="../css/form_styles.css" />
 		<link rel="stylesheet" href="css/update_balance_style.css">
 	</head>
 	<body>
 		<form class="cd-form" method="POST" action="#">
-			<legend>Enter the details</legend>
+			<div class="baslik">Enter The Details</div>
 			
 				<div class="error-message" id="error-message">
 					<p id="error"></p>

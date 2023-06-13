@@ -14,21 +14,27 @@
 	</head>
 	<body>
 		<form class="cd-form" method="POST" action="#">
-			<legend>Enter the details</legend>
+			<legend>Enter The Details</legend>
+
 			
 				<div class="error-message" id="error-message">
 					<p id="error"></p>
 				</div>
 				
 				<div class="icon">
-					<input class="b-isbn" type='text' name='b_isbn' id="b_isbn" placeholder="Book ISBN" required />
+					<input class="b-isbn" type='text' name='b_isbn' id="b_isbn" placeholder=" Book ISBN" required />
 				</div>
 					
 				<div class="icon">
-					<input class="b-copies" type="number" name="b_copies" placeholder="Copies to add" required />
+					<select class="b-copies" name="b_copies" id="b_copies" required>
+						<option value="">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Select Status</option>
+						<option value="Available">Available</option>
+						<option value="On Hold">On Hold</option>
+						<option value="Checked Out">Checked Out</option>
+					</select>
 				</div>
 						
-				<input type="submit" name="b_add" value="Add Copies" />
+				<input type="submit" name="b_add" value="Update Copies" />
 		</form>
 	</body>
 	
@@ -42,8 +48,14 @@
 				echo error_with_field("Invalid ISBN", "b_isbn");
 			else
 			{
-				$query = $con->prepare("UPDATE book SET copies = copies + ? WHERE isbn = ?;");
-				$query->bind_param("ds", $_POST['b_copies'], $_POST['b_isbn']);
+				$query = $con->prepare("SELECT * FROM bookcopy WHERE isbn = ?;");
+				$query->bind_param("s", $_POST['b_isbn']);
+				$query->execute();
+				$result = $query->get_result();
+				$row = mysqli_fetch_array($result);
+
+				$query = $con->prepare("CALL updateBookCopy(?, ?, ?, ?);");
+				$query->bind_param("isis", $row[0], $_POST['b_isbn'], $row[2], $_POST['b_copies']);
 				if(!$query->execute())
 					die(error_without_field("ERROR: Couldn\'t add copies"));
 				echo success("Copies successfully updated");

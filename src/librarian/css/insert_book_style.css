@@ -1,37 +1,117 @@
 /*----------Custom Icons----------*/
+
+.baslik{
+  font-size: 40px;
+  text-align: center;
+  color: black;
+}
+
 .cd-form .icon input, .cd-form .icon select{
   padding-left: 54px !important;
 }
 .cd-form .b-isbn {
-  background: url("../img/ic_book_isbn.svg") no-repeat 16px center;
+  background: url("../img/icons8-key-50.svg") no-repeat 2px center;
 }
 .cd-form [required].b-isbn {
-  background: url("../img/ic_book_isbn.svg") no-repeat 16px center, url("../img/ic_required.svg") no-repeat top right;
+  background: url("../img/icons8-key-50.svg") no-repeat 2px center, url("../img/ic_required.svg") no-repeat top right;
 }
 .cd-form .b-title {
-  background: url("../img/ic_book_title.svg") no-repeat 16px center;
+  background: url("../img/icons8-title-50.svg") no-repeat 2px center;
+}
+.cd-form .b-publication-date {
+  background:  url("../img/icons8-date-50.svg") no-repeat 2px center;
+  min-height: 50px;
+}
+.cd-form [required].b-publication-date {
+  background:  url("../img/icons8-date-50.svg") no-repeat 2px center, url("../img/ic_required.svg") no-repeat top right;
+  min-height: 55px;
+  min-width: 600px;
 }
 .cd-form [required].b-title {
-  background: url("../img/ic_book_title.svg") no-repeat 16px center, url("../img/ic_required.svg") no-repeat top right;
+  background: url("../img/icons8-title-50.svg") no-repeat 2px center, url("../img/ic_required.svg") no-repeat top right;
 }
 .cd-form .b-author {
-  background: url("../img/ic_book_author.svg") no-repeat 16px center;
+  background: url("../img/icons8-author-50.svg") no-repeat 2px center;
 }
 .cd-form [required].b-author {
-  background: url("../img/ic_book_author.svg") no-repeat 16px center, url("../img/ic_required.svg") no-repeat top right;
+  background: url("../img/icons8-author-50.svg") no-repeat 2px center, url("../img/ic_required.svg") no-repeat top right;
 }
+.cd-form [required].b-num-pages{
+  background: url("../img/icons8-page-50.svg") no-repeat 2px center;
+}
+.cd-form [required].b-num-pages{
+  background: url("../img/icons8-page-50.svg") no-repeat 2px center, url("../img/ic_required.svg") no-repeat top right;
+}
+.cd-form .b-subject{
+  background: url("../img/icons8-elective-50.svg") no-repeat 2px center;
+}
+.cd-form [required].b-subject{
+  background: url("../img/icons8-elective-50.svg") no-repeat 2px center, url("../img/ic_required.svg") no-repeat top right;
+}
+.cd-form .b-genre{
+  background: url("../img/icons8-book-50.svg") no-repeat 2px center;
+}
+.cd-form [required].b-genre{
+  background: url("../img/icons8-book-50.svg") no-repeat 2px center, url("../img/ic_required.svg") no-repeat top right;
+}
+.cd-form .b-language{
+  background: url("../img/icons8-language-50.svg") no-repeat 2px center;
+}
+.cd-form [required].b-language{
+  background: url("../img/icons8-language-50.svg") no-repeat 2px center, url("../img/ic_required.svg") no-repeat top right;
+}
+.cd-form .b-series{
+  background: url("../img/icons8-series-50.svg") no-repeat 2px center;
+}
+.cd-form [required].b-series{
+  background: url("../img/icons8-series-50.svg") no-repeat 2px center, url("../img/ic_required.svg") no-repeat top right;
+}
+.cd-form .b-format{
+  background: url("../img/icons8-format-24.svg") no-repeat 10px center;
+}
+.cd-form [required].b-format{
+  background: url("../img/icons8-format-24.svg") no-repeat 10px center, url("../img/ic_required.svg") no-repeat top right;
+}
+.cd-form .b-publisher{
+  background: url("../img/icons8-publish-50.svg") no-repeat 2px center;
+}
+.cd-form [required].b-publisher{
+  background: url("../img/icons8-publish-50.svg") no-repeat 2px center, url("../img/ic_required.svg") no-repeat top right;
+}
+.cd-form .b-rating{
+  background: url("../img/icons8-rating-50.svg") no-repeat 2px center;
+}
+.cd-form [required].b-rating{
+  background: url("../img/icons8-rating-50.svg") no-repeat 2px center, url("../img/ic_required.svg") no-repeat top right;
+}
+.cd-form .b-review{
+  background: url("../img/icons8-review-50.svg") no-repeat 2px center;
+}
+.cd-form [required].b-review{
+  background: url("../img/icons8-review-50.svg") no-repeat 2px center, url("../img/ic_required.svg") no-repeat top right;
+}
+.cd-form .b-edition{
+   background: url("../img/edition.svg") no-repeat 2px center;
+ }
+.cd-form [required].b-edition{
+  background: url("../img/edition.svg") no-repeat 2px center, url("../img/ic_required.svg") no-repeat top right;
+}
+
+
+/**/
+
 .cd-form .b-category {
-  background: url("../img/ic_book_category.svg") no-repeat 16px center;
+  background: url("../img/ic_book_author.svg") no-repeat 2px center;
 }
 .cd-form .b-price {
-  background: url("../img/ic_book_price.svg") no-repeat 16px center;
+  background: url("../img/ic_book_price.svg") no-repeat 2px center;
 }
 .cd-form [required].b-price {
-  background: url("../img/ic_book_price.svg") no-repeat 16px center, url("../img/ic_required.svg") no-repeat top right;
+  background: url("../img/ic_book_price.svg") no-repeat 2px center, url("../img/ic_required.svg") no-repeat top right;
 }
 .cd-form .b-copies {
-  background: url("../img/ic_book_copies.svg") no-repeat 16px center;
+  background: url("../img/ic_book_author.svg") no-repeat 2px center;
 }
 .cd-form [required].b-copies {
-  background: url("../img/ic_book_copies.svg") no-repeat 16px center, url("../img/ic_required.svg") no-repeat top right;
+  background: url("../img/edition.svg") no-repeat 2px center, url("../img/ic_required.svg") no-repeat top right;
 }

@@ -19,14 +19,14 @@
 		<div id="allTheThings">
 			<div id="member">
 				<a href="member">
-					<img src="img/ic_member.svg" width="250px" height="auto"/><br />
+					<img src="img/icons8-reader-64.svg" width="250px" height="auto"/><br />
 					&nbsp;Member
 				</a>
 			</div>
 			<div id="verticalLine">
 				<div id="librarian">
 					<a id="librarian-link" href="librarian">
-						<img src="img/ic_librarian.svg" width="250px" height="auto" /><br />
+						<img src="img/icons8-librarian-64.svg" width="250px" height="auto" /><br />
 						&nbsp;&nbsp;&nbsp;Librarian
 					</a>
 				</div>

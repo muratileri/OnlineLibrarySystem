@@ -34,7 +34,7 @@
 			
 			<br /><br /><br /><br />
 			
-			<p align="center">Don't have an account?&nbsp;<a href="register.php">Sign up</a>
+			<h1 align="center">Don't have an account?&nbsp;<a href="register.php">Sign up</a>
 		</form>
 	</body>
 	
@@ -62,7 +62,7 @@
 					header('Location: home.php');
 				}
 				else{
-					echo error_without_field("Buraya düzgün bir şey yazalım.");
+					echo error_without_field("Your account is under approval");
 				}
 			}
 		}

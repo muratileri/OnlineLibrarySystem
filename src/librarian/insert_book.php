@@ -14,7 +14,7 @@ require "header_librarian.php";
 </head>
 <body>
 	<form class="cd-form" method="POST" action="#">
-		<h1>Enter Book Details</h1>
+		<div class="baslik">Enter Book Details</div>
 
 		<div class="error-message" id="error-message">
 			<p id="error"></p>
@@ -37,39 +37,39 @@ require "header_librarian.php";
 		</div>
 
 		<div class="icon">
-			<input class="b-author-id" type="number" name="b_author_id" placeholder="Author ID" required />
+			<input class="b-author" type="number" name="b_author_id" placeholder="Author ID" required />
 		</div>
 
 		<div class="icon">
-			<input class="b-subject-name" type="text" name="b_subject_name" placeholder="Subject Name" required />
+			<input class="b-subject" type="text" name="b_subject_name" placeholder="Subject Name" required />
 		</div>
 
 		<div class="icon">
-			<input class="b-genre-name" type="text" name="b_genre_name" placeholder="Genre Name" required />
+			<input class="b-genre" type="text" name="b_genre_name" placeholder="Genre Name" required />
 		</div>
 
 		<div class="icon">
-			<input class="b-language-name" type="text" name="b_language_name" placeholder="Language Name" required />
+			<input class="b-language" type="text" name="b_language_name" placeholder="Language Name" required />
 		</div>
 
 		<div class="icon">
-			<input class="b-series-name" type="text" name="b_series_name" placeholder="Series Name" required />
+			<input class="b-series" type="text" name="b_series_name" placeholder="Series Name" required />
 		</div>
 
 		<div class="icon">
-			<input class="b-format-name" type="text" name="b_format_name" placeholder="Format Name" required />
+			<input class="b-format" type="text" name="b_format_name" placeholder="Format Name" required />
 		</div>
 
 		<div class="icon">
-			<input class="b-publisher-id" type="number" name="b_publisher_id" placeholder="Publisher ID" required />
+			<input class="b-publisher" type="number" name="b_publisher_id" placeholder="Publisher ID" required />
 		</div>
 
 		<div class="icon">
-			<input class="b-rating-id" type="number" name="b_rating_id" placeholder="Rating ID" required />
+			<input class="b-rating" type="number" name="b_rating_id" placeholder="Rating ID" required />
 		</div>
 
 		<div class="icon">
-			<input class="b-review-id" type="number" name="b_review_id" placeholder="Review ID" required />
+			<input class="b-review" type="number" name="b_review_id" placeholder="Review ID" required />
 		</div>
 
 		<div class="icon">

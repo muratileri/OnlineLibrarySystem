@@ -14,7 +14,7 @@
 	</head>
 	<body>
 		<?php
-			$query = $con->prepare("SELECT username, name, email, balance FROM pending_registrations");
+			$query = $con->prepare("SELECT * FROM useraccount where access_to_system = 0");
 			$query->execute();
 			$result = $query->get_result();
 			$rows = mysqli_num_rows($result);
@@ -23,7 +23,7 @@
 			else
 			{
 				echo "<form class='cd-form' method='POST' action='#'>";
-				echo "<legend>Pending registrations</legend>";
+				echo "<legend>Pending Registrations</legend>";
 				echo "<div class='error-message' id='error-message'>
 						<p id='error'></p>
 					</div>";
@@ -31,35 +31,39 @@
 						<tr>
 							<th></th>
 							<th>Username<hr></th>
-							<th>Name<hr></th>
 							<th>Email<hr></th>
-							<th>Balance<hr></th>
+							<th>Address<hr></th>
+							<th>Phone Number<hr></th>
 						</tr>";
 				for($i=0; $i<$rows; $i++)
 				{
 					$row = mysqli_fetch_array($result);
-					echo "<tr>";
-					echo "<td>
-							<label class='control control--checkbox'>
-								<input type='checkbox' name='cb_".$i."' value='".$row[0]."' />
-								<div class='control__indicator'></div>
-							</label>
-						</td>";
-					$j;
-					for($j=0; $j<3; $j++)
-						echo "<td>".$row[$j]."</td>";
-					echo "<td>$".$row[$j]."</td>";
-					echo "</tr>";
+					if($row[0] > 10){
+						
+						echo "<tr>";
+						echo "<td>
+								<label class='control control--checkbox'>
+									<input type='checkbox' name='cb_".$i."' value='".$row[0]."' />
+									<div class='control__indicator'></div>
+								</label>
+							</td>";
+						$j;
+						for($j=1; $j<6; $j++){
+							if($j !== 2){
+								echo "<td>".$row[$j]."</td>";
+							}
+						}
+					}
+					
+						
 				}
 				echo "</table><br /><br />";
 				echo "<div style='float: right;'>";
-				echo "<input type='submit' value='Delete selected' name='l_delete' />&nbsp;&nbsp;&nbsp;&nbsp;";
-				echo "<input type='submit' value='Confirm selected' name='l_confirm' />";
+				echo "<input type='submit' value='Delete Selected' name='l_delete' />&nbsp;&nbsp;&nbsp;&nbsp;";
+				echo "<input type='submit' value='Confirm Selected' name='l_confirm' />";
 				echo "</div>";
 				echo "</form>";
 			}
-			
-			$header = 'From: <noreply@library.com>' . "\r\n";
 			
 			if(isset($_POST['l_confirm']))
 			{
@@ -68,22 +72,17 @@
 				{
 					if(isset($_POST['cb_'.$i]))
 					{
-						$username =  $_POST['cb_'.$i];
-						$query = $con->prepare("SELECT * FROM pending_registrations WHERE username = ?;");
-						$query->bind_param("s", $username);
+						$userid =  $_POST['cb_'.$i];
+						$query = $con->prepare("SELECT * FROM useraccount WHERE user_id = ?;");
+						$query->bind_param("s", $userid);
 						$query->execute();
 						$row = mysqli_fetch_array($query->get_result());
 						
-						$query = $con->prepare("INSERT INTO member(username, password, name, email, balance) VALUES(?, ?, ?, ?, ?);");
-						$query->bind_param("ssssd", $username, $row[1], $row[2], $row[3], $row[4]);
-						if(!$query->execute())
+						$query = $con->prepare("CALL UpdateUserAccount(?, ?, ?, ?, ?, ?, ?, ?);");
+						if(!$query->execute([$userid, $row[1], $row[2], $row[3], $row[4], $row[5], $row[6], true]))
 							die(error_without_field("ERROR: Couldn\'t insert values"));
 						$members++;
 						
-						$to = $row[3];
-						$subject = "Library membership accepted";
-						$message = "Your membership has been accepted by the library. You can now issue books using your account.";
-						mail($to, $subject, $message, $header);
 					}
 				}
 				if($members > 0)
@@ -99,22 +98,22 @@
 				{
 					if(isset($_POST['cb_'.$i]))
 					{
-						$username =  $_POST['cb_'.$i];
-						$query = $con->prepare("SELECT email FROM pending_registrations WHERE username = ?;");
-						$query->bind_param("s", $username);
+						$userid =  $_POST['cb_'.$i];
+						$query = $con->prepare("SELECT borrower_id FROM borrower WHERE user_id = ?;");
+						$query->bind_param("s", $userid);
 						$query->execute();
-						$email = mysqli_fetch_array($query->get_result())[0];
+						$borrowerId = mysqli_fetch_array($query->get_result())[0];
+
+						$query = $con->prepare("CALL DeleteBorrower(?);");
+						$query->bind_param("s", $borrowerId);
+						if(!$query->execute())
+							die(error_without_field("ERROR: Couldn\'t delete values"));
 						
-						$query = $con->prepare("DELETE FROM pending_registrations WHERE username = ?;");
-						$query->bind_param("s", $username);
+						$query = $con->prepare("CALL DeleteUserAccount(?);");
+						$query->bind_param("s", $userid);
 						if(!$query->execute())
 							die(error_without_field("ERROR: Couldn\'t delete values"));
 						$requests++;
-						
-						$to = $email;
-						$subject = "Library membership rejected";
-						$message = "Your membership has been rejected by the library. Please contact a librarian for further information.";
-						mail($to, $subject, $message, $header);
 					}
 				}
 				if($requests > 0)

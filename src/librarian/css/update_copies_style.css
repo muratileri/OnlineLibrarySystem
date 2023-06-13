@@ -3,14 +3,14 @@
   padding-left: 54px !important;
 }
 .cd-form .b-isbn {
-  background: url("../img/ic_book_isbn.svg") no-repeat 16px center;
+  background: url("../img/icons8-key-50.svg") no-repeat 2px center;
 }
 .cd-form [required].b-isbn {
-  background: url("../img/ic_book_isbn.svg") no-repeat 16px center, url("../img/ic_required.svg") no-repeat top right;
+  background: url("../img/icons8-key-50.svg") no-repeat 2px center, url("../img/ic_required.svg") no-repeat top right;
 }
 .cd-form .b-copies {
-  background: url("../img/ic_book_copies.svg") no-repeat 16px center;
+  background: url("../img/icons8-series-50.svg") no-repeat 2px center;
 }
 .cd-form [required].b-copies {
-  background: url("../img/ic_book_copies.svg") no-repeat 16px center, url("../img/ic_required.svg") no-repeat top right;
+  background: url("../img/icons8-series-50.svg") no-repeat 2px center, url("../img/ic_required.svg") no-repeat top right;
 }

@@ -48,7 +48,7 @@ header #cd-logo img , header #cd-logo p{
 }
 
 header #cd-logo p{
-	color: rgba(39, 107, 24, 0.43);
+	color: rgb(255, 255, 255);
 	font-weight: bold;
 	font-size: 1.4rem;
 }
